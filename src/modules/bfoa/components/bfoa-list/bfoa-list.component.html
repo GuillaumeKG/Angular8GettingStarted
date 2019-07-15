@@ -1,0 +1,29 @@
+<section>
+    <h1>Movies</h1>
+
+    <section class="movies-list">
+        <div *ngFor="let movie of movies" >
+
+            <mat-card class="movie-card">
+                <mat-card-header>
+                    <mat-card-title> {{ movie.Title }}</mat-card-title>
+                    <mat-card-subtitle> {{ movie.Year }}</mat-card-subtitle>
+                </mat-card-header>
+                <div class="no-overflow">
+                    <img mat-card-image [src]="movie.Poster | sanitize" alt="Movie Poster">
+                </div>
+                <mat-card-content>
+                    <p>
+                    xxxxxxxxxxxxxx
+                    </p>
+                </mat-card-content>
+                <mat-card-actions>
+                    <a [routerLink]="['/bfoas', movie.imdbID]">More...</a>
+                </mat-card-actions>
+            </mat-card>        
+        </div>
+    </section>
+</section>
+
+
+
