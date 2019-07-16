@@ -1,0 +1,12 @@
+<section>
+    <h1>Movies</h1>
+
+    <section class="movies-list">
+        <div *ngFor="let movie of movies" >
+           <app-library-card [movie]="movie" (deleteEvent)="onDelete($event)"></app-library-card>      
+        </div>
+    </section>
+</section>
+
+
+

@@ -1,0 +1,18 @@
+<mat-card class="movie-card">
+    <mat-card-header>
+        <mat-card-title> {{ movie.Title }}</mat-card-title>
+        <mat-card-subtitle> {{ movie.Year }}</mat-card-subtitle>
+    </mat-card-header>
+    <div class="no-overflow">
+        <img mat-card-image [src]="movie.Poster | sanitize" alt="Movie Poster">
+    </div>
+    <mat-card-content>
+        <p>
+        xxxxxxxxxxxxxx
+        </p>
+    </mat-card-content>
+    <mat-card-actions>
+        <a [routerLink]="[movie.imdbID]">More...</a>
+        <a (click)="onDelete()" >Delete</a>
+    </mat-card-actions>
+</mat-card>  

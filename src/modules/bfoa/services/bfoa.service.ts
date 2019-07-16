@@ -17,12 +17,8 @@ export class BfoaService {
   }
   
   public getBfoaById(id:number){
-    let bfoa = new Bfoa()
-    bfoa.id = 12
-    bfoa.title = 'Structure'
-    bfoa.url = 'http://www/google/fr'
 
-    return bfoa
+    return {}
   }
 
 }

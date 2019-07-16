@@ -110,3 +110,19 @@ export class AppModule { }
 
 * To use Materail icon add, this line in index.html:
 `<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">`
+
+## Angular-cli
+### Commands
+To build the project:
+
+    ng build
+To run the test via Karma:  
+
+    ng test
+To run the tests via Protractor:
+
+    ng e2e
+
+### Scaffolding
+
+    ng generate directive|pipe|service|class|guard|interface|enum|module objectName

@@ -1,8 +1,10 @@
 
 # Angular Routing
 
-## Usage
-1. Define routing rule:
+## Setup Routing Rules
+1. Define routing rule  
+A best practice is to create a dedicated module for routing feature, usually called app-routing.module.ts for the root module.
+
 ```Typescript
 const routes: Routes = [
   {path: '', component: AuthentComponent},
@@ -33,14 +35,21 @@ In case of a sub-module, use `RouterModule.forChild(routes)` instead.
 export class AppModule { }
 ```
 
-3. Add a link (routerLink) in the template:  
+## Navigation
+
+1. Set the tag where the routed components will be loaded, generally in app.component.html
+```
+<router-outlet></router-outlet>
+```
+
+2. Add a link (routerLink) in the template:  
 ```
     <a [title]="Product details" [routerLink]="['/products', productId]">
       {{ product.name }}
     </a>
 ```
 
-4. To retrieve route information on target component:  
+3. To retrieve route information on target component:  
 ```Typescript
 import { ActivatedRoute } from '@angular/router';
 
@@ -59,6 +68,24 @@ export class ProductDetailsComponent implements OnInit {
     });
   }
 }
+```
+
+## Location
+Allows to interact with browser history.  
+For instance, to go back in history:
+```Typescript
+import { Location } from '@angular/common'
+
+...
+  constructor(..., private location: Location, ...) {}
+
+  goBack(): void{
+      this.location.back()
+  }
+```
+
+```HTML
+<button (click)="goBack()">go back</button>
 ```
 
 ## Advanced Settings
