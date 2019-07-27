@@ -138,3 +138,45 @@ import {
     </div>
 ```
 
+### Subject
+### PubSub pattern
+
+* **Service**  
+```Typescript
+@Injectable()
+export class ProductService {
+ 
+  // Observable sources
+  private currentProductSource = new Subject<Product>();
+ 
+  // Observable streams
+  currentProduct$ = this.currentProductSource.asObservable();
+ 
+  // Service message commands
+  selectProduct(product: Product) {
+    this.currentProductSource.next(product);
+  }
+}
+```
+
+* **Component**  
+```Typescript
+@Component({
+  ...
+  providers: [ProductService]
+})
+export class ProductOverviewComponent {
+
+  constructor(private productService: ProductService) {
+    this.subscription. = productService.currentProduct$.subscribe(
+      p => {
+        ...
+      });
+  }
+  
+  ngOnDestroy() {
+    // prevent memory leak when component destroyed
+    this.subscription.unsubscribe();
+  }
+}
+```

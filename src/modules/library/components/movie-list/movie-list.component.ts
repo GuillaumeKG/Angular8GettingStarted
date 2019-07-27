@@ -22,10 +22,15 @@ export class MovieListComponent implements OnInit {
       error: err => console.error('movieService.getMovies() got an error: ' + err),
       complete: () => console.log('movieService.getMovies() got a complete notification'),
     })
+    
   }
 
   public onDelete(id: number){
     console.log(`Movie ${id} has been deleted`)  
     this.movies = this.movies.filter(movie => movie.imdbID != id)
   }
+}
+
+class SearchResult {
+  Search: Movie[]
 }

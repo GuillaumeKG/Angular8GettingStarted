@@ -5,3 +5,7 @@ export class Movie {
     Type: string;
     Poster: string;
 }
+
+export class MovieSearchResult {
+    Search: Movie[]
+  }

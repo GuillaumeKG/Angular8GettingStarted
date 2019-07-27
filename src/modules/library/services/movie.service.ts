@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Movie } from '../models/movie';
+import { Movie, MovieSearchResult } from '../models/movie';
 import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -16,9 +17,9 @@ export class MovieService {
     console.log('MovieService constructor')
    }
 
-  public getMovies(){
+  public getMovies():Observable<MovieSearchResult>{
     console.log(this.baseUrlDataSource + 's=star')
-    return this.http.get(this.baseUrlDataSource + 's=star')
+    return this.http.get<MovieSearchResult>(this.baseUrlDataSource + 's=star')
   }
   
   public getMovieById(id:number){
