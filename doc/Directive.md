@@ -2,11 +2,12 @@
 
 ## Overview
 There are 2 types of Directive:
-* **Structural Directive**  
+* **[Structural Directive](#structural)**  
 
-* **Atrribute Directive**  
+* **[Atrribute Directive](#attribute)**  
 
 ## Built-In Directives
+
 ### Structural
 #### ngIf
 ```HTML

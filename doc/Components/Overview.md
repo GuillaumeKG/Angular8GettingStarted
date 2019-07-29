@@ -1,5 +1,11 @@
 # Component
 
+* [Overview](#overview)  
+* [Component Lifecycle](#component-lifecycle) 
+* [HTML Template](#html-template)
+* [Style](#style)
+
+
 ## Overview
 A component is responsible for the rendering, it shouldn't handle business logic.  
 
@@ -23,7 +29,13 @@ import { Component } from '@angular/core';
     templateUrl: './myComp.component.html',
     styleUrls: ['./myComp.component.css'],
     providers: [],
-    encapsulation: ViewEncapsulation.ShadowDom
+    encapsulation: ViewEncapsulation.ShadowDom,
+    host: {
+        '[@state]':'state',
+    },
+    animations: [
+
+    ]
 
 })
 export class MyComponent {
@@ -52,18 +64,22 @@ export class MyComponent {
     * None   
       Disable encapsulation, the style is added to the global styles.
 
-To be used in the module application, a component has to be defined in this module in declarations array.
+* **host**  
 
-----------------------
+* **animations**  
+
+
+To be used in the module application, a component has to be defined in this module in declarations array.
 
 ## Component Lifecycle
 A component has a lifecycle managed by Angular. Angular creates it, renders it, creates and renders its children, checks it when its data-bound properties change, and destroys it before removing it from the DOM.  
 As a component is a specific Directive, directives have the same lifecycle.  
 
-<img src="img/component-lifecycle.jpg" width="500px">
+<img src="../img/component-lifecycle.jpg" width="500px">
 
 
 To add behavior to a lifecyclehook, the component should implement the corresponding interface (even if it's optional as JS doesn't have interface and can't see interface at runtime).  
+
 
 Before a view is displayed, Angular evaluates the directives and resolves the binding syntax in the template to modify the HTML elements and the DOM.  
 Angular updates the display when these properties change. More precisely, the redisplay occurs after some kind of asynchronous event related to the view, such as a keystroke, a timer completion, or a response to an HTTP request.  
@@ -125,7 +141,8 @@ Respond after Angular checks the component's views and child views .
 Called just before Angular destroys the directive/component.  
 Cleanup just before Angular destroys the directive/component. Unsubscribe Observables and detach event handlers to avoid memory leaks.  
 
------------------------
+
+
 ## HTML Template
 ### Basics Syntax
 * **Template expression**  
@@ -215,13 +232,13 @@ Most of the time, we’ll use the shortcut, however sometimes when we need to pr
 (input)=”setUppercaseTitle($event)” 
 ```
 
-### Style
+## Style
 The style sheet define at component level apply only within the template of this component (neither parent nor children component).  
 
 You can import CSS inside CSS file: `@import mynested.css`.  
 
 
-#### Special Selectors
+### Special Selectors
 * **:host**  
     Targets styles in the element that hosts the component 
     ```CSS
@@ -247,144 +264,18 @@ You can import CSS inside CSS file: `@import mynested.css`.
     }
     ```
 
+* **::ng-deep**  
+    The style will affect this component and any of its descendants.
 
-------------------
+### Annotations
 
+#### HostBinding
+Allow to act on host HTML container from the child component:  
 
--------------------
-## Parent-child component relationship
-#### Pass parameter downward
-In parent component's template:  
-```
-<child-component [propertyName]="value"></child-component>
-```
-
-In child component definition, the attribute is decorated with @Input:
-```
-import { Input } from '@angular/core';
-
-export class ChildComponent {
-    @Input() propertyName: Type;
-    ...
-}
-```
-
-#### Emit Event back
-* In child component
 ```Typescript
-import { Input, Output, EventEmitter } from '@angular/core';
-
-export class ChildComponent {
-    @Ouput() notify = new EventEmitter();
-    @Input() product: Product;
-    ...
+# Add the class .focus to host when inputFocus is true
+@HostBinding('class.focus')
+get focus() {
+    return this.inputFocus;
 }
 ```
-
-```HTML
-<p *ngIf="product.price > 700">
-  <button (click)="notify.emit()">Notify Me</button>
-</p>
-```
-
-* In parent component
-```Typescript
-import { Output, EventEmitter } from '@angular/core';
-
-export class ChildComponent {
-
-    onNotify() {
-        window.alert('You will be notified when the product goes on sale');
-    }
-    ...
-}
-```
-
-```HTML
-<app-child
-  [product]="product" 
-  (notify)="onNotify()">
-</app-child>
-```
-
-#### Manipulate Child from Parent
-Allow parent to access properties/methods of its child 
-
-* **Local variable way**  
-    Only accessible from template
-
-    ```HTML
-    <!-- in .html -->
-    <app-child #child1></app-child>
-    <button (click)="child1.stop()">Stop</button>
-    <div class="seconds">{{child1.myvalue}}</div>
-    ```
-
-* **ViewChild**  
-
-```
- <app-child #child1></app-child>
-
----
-export class CountdownViewChildParentComponent implements AfterViewInit {
- 
-  @ViewChild(AppChildComponent, {static: false})
-  private appChild: AppChildComponent;
- 
-  start() { this.appChild.start(); }
-```
-
-## Dynamic Component
-
-1. Create a directive
-```TypeScript
-@Directive({
-  selector: '[dir-host]',
-})
-export class MyDirectiveDirective {
-  constructor(public viewContainerRef: ViewContainerRef) { }
-}
-```
-
-2. Setup the parent component
-   * Add a directive ng-template referencing the new created directive
-        ```HTML
-        <div>
-            <h3>Dynamic Component</h3>
-            <ng-template dir-host></ng-template>
-        </div>
-        ```
-   * Resolve component
-```TypeScript
-export class ParentComponent implements OnInit, {
-  @Input() components: MyComponent[];
-  @ViewChild(MyDirectiveDirective, {static: true}) dirHost: MyDirectiveDirective;
-
-  constructor(private componentFactoryResolver: ComponentFactoryResolver) { }
-
-  ngOnInit() {
-    this.loadComponent();
-  }
-
-  loadComponent() {
-    const comp = components[0]; 
-    # Create an instance of the component
-    const componentFactory = this.componentFactoryResolver.resolveComponentFactory(comp.component);
-
-    # Retrieve ViewContainerRef of the directive
-    const viewContainerRef = this.dirHost.viewContainerRef;
-    viewContainerRef.clear();
-
-    # Create reference to the loaded component and assign it
-    const componentRef = viewContainerRef.createComponent(componentFactory);
-    (<AdComponent>componentRef.instance).data = comp.data;
-  }
-}
-
-export interface AdComponent {
-  data: any;
-}
-
-```
-
-__Warning__: To ensure that the compiler still generates a factory, add dynamically loaded components to the NgModule's entryComponents array.  

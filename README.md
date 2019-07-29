@@ -5,7 +5,7 @@
   * [Project](doc/Setup.md#initialize-project) 
   * [Webpack](doc/Setup.md#setup-webpack)
 * [Core Concepts](doc/CoreConcepts.md)
-  * [Component](doc/Component.md)
+  * [Component](doc/Components/Overview.md)
   * [Module](doc/Module.md)
   * [Service](doc/Service.md)
   * [Directive](doc/Directive.md)

@@ -22,7 +22,7 @@ export class MovieListComponent implements OnInit {
       error: err => console.error('movieService.getMovies() got an error: ' + err),
       complete: () => console.log('movieService.getMovies() got a complete notification'),
     })
-    
+
   }
 
   public onDelete(id: number){
@@ -31,6 +31,3 @@ export class MovieListComponent implements OnInit {
   }
 }
 
-class SearchResult {
-  Search: Movie[]
-}
