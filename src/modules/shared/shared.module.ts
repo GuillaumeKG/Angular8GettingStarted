@@ -7,11 +7,13 @@ import { HttpClientModule } from '@angular/common/http';
 import { MatButtonModule, MatCheckboxModule } from '@angular/material';
 import { MatCardModule} from '@angular/material';
 import { SanitizePipe } from './pipes/sanitize.pipe';
+import { HighlightDirective } from './directives/HighlightDirective';
 
 
 @NgModule({
   declarations: [
-    SanitizePipe
+    SanitizePipe,
+    HighlightDirective,
   ],
   imports: [
     CommonModule,
@@ -32,7 +34,8 @@ import { SanitizePipe } from './pipes/sanitize.pipe';
     MatCardModule,
     MatButtonModule,
     MatCheckboxModule,
-    SanitizePipe
+    SanitizePipe,
+    HighlightDirective
   ]
 })
 export class SharedModule { }

@@ -1,98 +1,127 @@
-#
+# Typescript
 
 ## Variables
 ### keywords
 * **var**  
+
 * **let**  
+
 * **const**  
+
 
 ### Types
 * **number**  
-* **string**
-* **boolean**
-* **object**  
-```Typescript
-let myObj = {
-    a:1,
-    b:2
-}
 
-for(let prop in obj){
-    obj[prop] = ...;
-}
-```
+* **string**
+
+* **boolean**
+
+* **object**  
+    ```Typescript
+    let myObj = {
+        a:1,
+        b:2
+    }
+
+    for(let prop in obj){
+        obj[prop] = ...;
+    }
+    ```
 
 * **enum**  
-By default, value attached to key are automatically assigned with a number auto-incremented starting from 0. But the initial value can be overrided or any other keys.
-```Typescript
-enum Direction {
-    Up, // 0
-    Down, // 1
-    Left, // 2
-    Right, // 3
-}
+    By default, value attached to key are automatically assigned with a number auto-incremented starting from 0. But the initial value can be overrided or any other keys.
+    ```Typescript
+    enum Direction {
+        Up, // 0
+        Down, // 1
+        Left, // 2
+        Right, // 3
+    }
 
-enum Direction {
-    Up =1 , // 1
-    Down, // 2
-    Left, // 3
-    Right, // 4
-}
-```
-Typescript also support string Enum: 
-```Typescript
-enum Direction {
-    Up = "UP",
-    Down = "DOWN",
-    Left = "LEFT",
-    Right = "RIGHT",
-}
-```
-Enum value can be an expression:
-```Typescript
-enum FileAccess {
-    // constant members
-    None,
-    Read    = 1 << 1,
-    Write   = 1 << 2,
-    ReadWrite  = Read | Write,
-    // computed member
-    G = "123".length
-}
-```
+    enum Direction {
+        Up =1 , // 1
+        Down, // 2
+        Left, // 3
+        Right, // 4
+    }
+    ```
+    Typescript also support string Enum: 
+    ```Typescript
+    enum Direction {
+        Up = "UP",
+        Down = "DOWN",
+        Left = "LEFT",
+        Right = "RIGHT",
+    }
+    ```
+    Enum value can be an expression:
+    ```Typescript
+    enum FileAccess {
+        // constant members
+        None,
+        Read    = 1 << 1,
+        Write   = 1 << 2,
+        ReadWrite  = Read | Write,
+        // computed member
+        G = "123".length
+    }
+    ```
 
 * **array**
-```Typescript
-let list: number[] = [1, 2, 3]
+    ```Typescript
+    let list: number[] = [1, 2, 3]
 
-list.push(4)
-list.unshift(0)
+    list.push(4) // Add at the end of the array
+    list.unshift(0) // Add at the beginning of the array
 
-```  
+    const [first, second] = list // fist = 1, second = 2 
+    ```  
 * **map**  
-```Typescript
-let map: Map([
-    ["key1", 12],[
-    ["key2", 20],[
-    ["key3",  25]
-    ])
+    No duplicate key.   
 
-map.has("key1")
+    ```Typescript
+    let map: Map([
+        ["key1", 12],[
+        ["key2", 20],[
+        ["key3",  25]
+        ])
 
-// Automatically call for map.entries()
-for (let [key, value] of map){
-    console.log(key, value)
-}
+    map.set("Two", 3)
 
-```  
+    map.has("key1")
+
+    // Automatically call for map.entries()
+    for (let [key, value] of map){
+        console.log(key, value)
+    }
+    ```  
 
 * **set**  
+    No duplicate.
+
+    ```Typescript
+    let set = new Set["XXXXX", "YYYY", "ZZZZ"]
+
+    let set = new Set()
+
+    set.add("EEEEEEE")
+
+    ```
+
+## Functions
+
 ```Typescript
-let set = new Set["XXXXX", "YYYY", "ZZZZ"]
+function f(name: string, age: number): Person{
+    ...
+    return person
+} 
 
-let set = new Set()
+// Destructuration
+function f({x, y=0}){
 
-set.add("EEEEEEE")
+}
+
+f({x:1, y:2, z:3})
 
 ```
 

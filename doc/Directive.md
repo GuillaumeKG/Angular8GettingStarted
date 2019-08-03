@@ -3,11 +3,115 @@
 ## Overview
 There are 2 types of Directive:
 * **[Structural Directive](#structural)**  
+  Change the DOM layout by adding/removing DOM elements.
 
 * **[Atrribute Directive](#attribute)**  
+  Change the appearance and behaviour of a DOM element
+
+Moreover, Components are also Directives. 
+
+## Custom Directives
+### Attribute
+
+```Typescript
+import { Directive } from '@angular/core';
+
+@Directive({
+  selector: '[appHighlight]'
+})
+export class HighlightDirective {
+    @Input('color') highlightColor: string;
+
+    constructor(private el: ElementRef) {
+       el.nativeElement.style.backgroundColor = 'yellow';
+    }
+
+    @HostListener('mouseenter') onMouseEnter() {
+      this.highlight(this.highlightColor);
+    }
+
+    @HostListener('mouseleave') onMouseLeave() {
+      this.highlight(null);
+    }
+
+    private highlight(color: string) {
+      this.el.nativeElement.style.backgroundColor = color;
+    }
+}
+```
+**Note**: selector is between [], meaning it's HTML attribute.  
+**Note**: The ElementRef injected in constructor represents the host DOM element.  
+
+```HTML
+<h1 appHighlight color="blue">Bfoas</h1>
+<h1 appHighlight [color]="varname">Bfoas</h1>
+```
+
+### Structural
+#### Basics
+Structural directive always need "*" as prefix of their attribute name in tempalte (*ngIf, *ngFor...). This is a shorcut for usage of ng-template. For instance, the first expression is transformed automatically into the second:
+```HTML
+<div *ngIf="bool" >XXXXXXXXXXXXXXX</div>
+
+<ng-template [ngIf]="bool">
+  <div>XXXXXXXXXXXXXXX</div>
+</ng-template>
+```
+
+```HTML
+<div *ngFor="let hero of heroes; let i=index; let odd=odd; trackBy: trackById" [class.odd]="odd">
+  ({{i}}) {{hero.name}}
+</div>
+
+<ng-template ngFor let-hero [ngForOf]="heroes" let-i="index" let-odd="odd" [ngForTrackBy]="trackById">
+  <div [class.odd]="odd">({{i}}) {{hero.name}}</div>
+</ng-template>
+```
+
+#### Implementation
+```Typescript
+import { Directive, Input, TemplateRef, ViewContainerRef } from '@angular/core';
+
+/**
+ * Add the template content to the DOM unless the condition is true.
+ */
+@Directive({ 
+  selector: '[appUnless]'
+})
+export class UnlessDirective {
+  private hasView = false;
+
+  constructor(
+    // Reference the content of the directive
+    private templateRef: TemplateRef<any>,
+    // Reference the host element
+    private viewContainer: ViewContainerRef) { }
+
+  @Input() set appUnless(condition: boolean) {
+    if (!condition && !this.hasView) {
+      this.viewContainer.createEmbeddedView(this.templateRef);
+      this.hasView = true;
+    } else if (condition && this.hasView) {
+      this.viewContainer.clear();
+      this.hasView = false;
+    }
+  }
+}
+```
+
+```HTML
+<p *appUnless="condition" class="unless a">
+  (A) This paragraph is displayed because the condition is false.
+</p>
+
+<p *appUnless="!condition" class="unless b">
+  (B) Although the condition is true,
+  this paragraph is displayed because appUnless is set to false.
+</p>
+```
+
 
 ## Built-In Directives
-
 ### Structural
 #### ngIf
 ```HTML
@@ -51,7 +155,6 @@ With async, the async pipe automatically subscribe/unsubscribe to the Observable
 </div>
 ```
 
-### Attribute
 #### ngStyle
 ```HTML
 <div [ngStyle]="{backgroundColor: rating>3 ? 'green' : 'red'"></div>
